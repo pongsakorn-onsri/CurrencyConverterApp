@@ -18,7 +18,9 @@ enum APIRequest {
             let request = URLRequest(url: url)
             let (data, _) = try await session.data(for: request)
             do {
-                let response = try JSONDecoder().decode(ExchangeRateResponse.self, from: data)
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let response = try decoder.decode(ExchangeRateResponse.self, from: data)
                 return response
             } catch {
                 throw APIError.decodeResponseFailed

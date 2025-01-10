@@ -16,6 +16,12 @@ final class SourceCurrencyView: UIView {
         label.font = .systemFont(ofSize: 40, weight: .bold)
         return label
     }()
+    private var rateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 25, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     private var nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .light)
@@ -29,8 +35,16 @@ final class SourceCurrencyView: UIView {
         return imageView
     }()
     
+    private lazy var symbolView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [symbolLabel, rateLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.alignment = .lastBaseline
+        return stackView
+    }()
+    
     private lazy var titleView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [symbolLabel, nameLabel])
+        let stackView = UIStackView(arrangedSubviews: [symbolView, nameLabel])
         stackView.axis = .vertical
         stackView.spacing = 4
         stackView.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -48,7 +62,7 @@ final class SourceCurrencyView: UIView {
     }()
     
     // MARK: Model
-    private let currency: CurrencySymbol
+    private(set) var currency: CurrencySymbol
     weak var delegate: SourceCurrencyViewDelegate?
     
     init(currency: CurrencySymbol) {
@@ -65,6 +79,14 @@ final class SourceCurrencyView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         delegate?.didSelectSource(currency: currency)
+    }
+    
+    func bind(rate: Double) {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.usesSignificantDigits = true
+        let formattedRate = formatter.string(from: NSNumber(floatLiteral: rate))
+        rateLabel.text = "\(formattedRate ?? "")"
     }
 }
 

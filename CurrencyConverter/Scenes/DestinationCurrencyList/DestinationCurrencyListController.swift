@@ -1,6 +1,6 @@
 import UIKit
 
-final class SourceCurrencyListViewController: UIViewController {
+final class DestinationCurrencyListController: UIViewController {
     // MARK: UI Components
     private var contentView: UIStackView = {
         let stackView = UIStackView()
@@ -13,9 +13,9 @@ final class SourceCurrencyListViewController: UIViewController {
     }()
     
     // MARK: ViewModels
-    private var viewModel: SourceCurrencyListViewModel
+    private var viewModel: DestinationCurrencyListViewModel
     
-    init(viewModel: SourceCurrencyListViewModel = .init()) {
+    init(viewModel: DestinationCurrencyListViewModel = .init(sourceCurrency: .USD)) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,12 +27,16 @@ final class SourceCurrencyListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        Task {
+            try await viewModel.fetchCurrencyRates()
+            refreshViews()
+        }
     }
 }
 
-private extension SourceCurrencyListViewController {
+private extension DestinationCurrencyListController {
     func setupViews() {
-        title = "Convert from"
+        title = "1 \(viewModel.sourceCurrency.rawValue) ="
         view.backgroundColor = .white
         setupComponents()
         setupNavigationBar()
@@ -41,20 +45,28 @@ private extension SourceCurrencyListViewController {
     
     func setupComponents() {
         view.addSubview(contentView)
-        viewModel.items.forEach { currency in
-            let currencyView = SourceCurrencyView(currency: currency)
+        viewModel.items.forEach { item in
+            let currencyView = SourceCurrencyView(currency: item.symbol)
             currencyView.delegate = self
+            if let rate = item.rate {
+                currencyView.bind(rate: rate)
+            }
             contentView.addArrangedSubview(currencyView)
         }
     }
     
-    func setupNavigationBar() {
-        navigationItem.rightBarButtonItem = .init(
-            title: "History",
-            primaryAction: UIAction { [weak self] _ in
-                self?.openHistory()
+    func refreshViews() {
+        contentView.subviews
+            .forEach { view in
+                guard let sourceCurrencyView = view as? SourceCurrencyView else { return }
+                if let rate = viewModel.getRate(currency: sourceCurrencyView.currency) {
+                    sourceCurrencyView.bind(rate: rate)
+                }
             }
-        )
+    }
+    
+    func setupNavigationBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     func setupConstraints() {
@@ -64,19 +76,14 @@ private extension SourceCurrencyListViewController {
             contentView.topAnchor.constraint(equalTo: view.topAnchor)
         ])
     }
-    
-    func openHistory() {
-        
-    }
 }
 
-extension SourceCurrencyListViewController: SourceCurrencyViewDelegate {
+extension DestinationCurrencyListController: SourceCurrencyViewDelegate {
     func didSelectSource(currency: CurrencySymbol) {
-        let controller = DestinationCurrencyListController(viewModel: .init(sourceCurrency: currency))
-        navigationController?.show(controller, sender: nil)
+        dump(currency)
     }
 }
 
 #Preview {
-    UINavigationController(rootViewController: SourceCurrencyListViewController())
+    UINavigationController(rootViewController: DestinationCurrencyListController())
 }
