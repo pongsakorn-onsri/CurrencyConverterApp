@@ -1,7 +1,9 @@
 import Foundation
 
 final class SourceCurrencyListViewModel {
-    init() {
-        
+    private(set) var items: [CurrencySymbol]
+    
+    init(items: [CurrencySymbol] = CurrencySymbol.allCases) {
+        self.items = items
     }
 }
