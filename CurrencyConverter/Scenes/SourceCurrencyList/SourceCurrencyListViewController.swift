@@ -2,6 +2,7 @@ import UIKit
 
 final class SourceCurrencyListViewController: UIViewController {
     
+    // MARK: UI Components
     private var label: UILabel = {
         let label = UILabel()
         label.text = "Hello World"
@@ -10,7 +11,11 @@ final class SourceCurrencyListViewController: UIViewController {
         return label
     }()
     
-    init() {
+    // MARK: ViewModels
+    private var viewModel: SourceCurrencyListViewModel
+    
+    init(viewModel: SourceCurrencyListViewModel = .init()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
