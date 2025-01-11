@@ -1,7 +1,9 @@
 import Foundation
 
 protocol CurrencyConversionViewModel {
+    var inputSource: String { get }
     var sourceSymbol: String { get }
+    var inputDestination: String { get }
     var destinationSymbol: String { get }
     var rate: Double { get }
     var isValid: Bool { get }
@@ -40,18 +42,18 @@ final class CurrencyConversionViewModelImpl: CurrencyConversionViewModel {
         rate: Double,
         converter: Convertable = ExchangeConverter()
     ) {
-        self.inputSource = source.amount.formatted()
+        self.inputSource = String(source.amount)
         self.sourceCurrency = source.currency
-        self.inputDestination = destination.amount.formatted()
+        self.inputDestination = String(destination.amount)
         self.destinationCurrency = destination.currency
         self.rate = rate
         self.converter = converter
     }
     
     init(
-        sourceCurrency: CurrencySymbol = .USD,
-        destinationCurrency: CurrencySymbol = .VND,
-        rate: Double = 25379.57,
+        sourceCurrency: CurrencySymbol,
+        destinationCurrency: CurrencySymbol,
+        rate: Double,
         converter: Convertable = ExchangeConverter()
     ) {
         self.sourceCurrency = sourceCurrency

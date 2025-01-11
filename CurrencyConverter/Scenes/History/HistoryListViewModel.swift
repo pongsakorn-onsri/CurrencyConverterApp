@@ -8,14 +8,14 @@ protocol HistoryListViewModel {
 final class HistoryListViewModelImpl: HistoryListViewModel {
     
     var items: [HistoryItem] = []
+    let persistence: Persistence
     
-    init(items: [HistoryItem] = []) {
-        self.items = items
+    init(persistence: Persistence = LocalStorage()) {
+        self.persistence = persistence
     }
     
     func fetchHistory() async -> [HistoryItem] {
-        let cached = [HistoryItem(source: .init(amount: 10, currency: .USD), destination: .init(amount: 100000, currency: .VND), rate: 0.1), HistoryItem(source: .init(amount: 10, currency: .USD), destination: .init(amount: 100000, currency: .VND), rate: 0.1)]
-        self.items = cached
+        self.items = persistence.historyItems
         return self.items
     }
 }

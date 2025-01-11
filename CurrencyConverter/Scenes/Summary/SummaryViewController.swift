@@ -87,6 +87,7 @@ private extension SummaryViewController {
     func shareAction() -> UIAction {
         UIAction { [weak self] _ in
             guard let self else { return }
+            viewModel.save()
             let activityController = UIActivityViewController(activityItems: [contentView.asImage()], applicationActivities: nil)
             self.showDetailViewController(activityController, sender: nil)
         }

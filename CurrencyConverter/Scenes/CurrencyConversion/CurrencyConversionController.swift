@@ -44,7 +44,7 @@ final class CurrencyConversionController: UIViewController {
     private var viewModel: CurrencyConversionViewModel
     private var cancellables = Set<AnyCancellable>()
     
-    init(viewModel: CurrencyConversionViewModel = CurrencyConversionViewModelImpl()) {
+    init(viewModel: CurrencyConversionViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -155,7 +155,10 @@ private extension CurrencyConversionController {
     
     func setupBinding() {
         sourceAmountView.bind(symbol: viewModel.sourceSymbol)
+        sourceAmountView.textField.text = viewModel.inputSource
         destinationAmountView.bind(symbol: viewModel.destinationSymbol)
+        destinationAmountView.textField.text = viewModel.inputDestination
+        summaryButton.isEnabled = viewModel.isValid
     }
     
     func summaryAction() -> UIAction {
@@ -168,5 +171,5 @@ private extension CurrencyConversionController {
 }
 
 #Preview {
-    UINavigationController(rootViewController: CurrencyConversionController())
+    UINavigationController(rootViewController: CurrencyConversionController(viewModel: CurrencyConversionViewModelImpl(sourceCurrency: .USD, destinationCurrency: .MYR, rate: 4.5)))
 }

@@ -20,8 +20,8 @@ final class HistoryListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.separatorStyle = .singleLine
-        tableView.separatorColor = .red
+        tableView.separatorColor = .brown
+        tableView.insetsContentViewsToSafeArea = true
         tableView.separatorInset = .zero
         return tableView
     }()
