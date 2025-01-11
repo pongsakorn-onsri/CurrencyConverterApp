@@ -4,7 +4,7 @@ final class DestinationCurrencyListViewModel {
     private(set) var sourceCurrency: CurrencySymbol
     private(set) var items: [CurrencyRate]
     
-    init(sourceCurrency: CurrencySymbol, items: [CurrencyRate] = DestinationCurrencyListViewModel.items ) {
+    init(sourceCurrency: CurrencySymbol, items: [CurrencyRate] = DestinationCurrencyListViewModel.items) {
         self.sourceCurrency = sourceCurrency
         self.items = items.filter { $0.symbol != sourceCurrency }
     }

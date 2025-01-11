@@ -1,10 +1,10 @@
 import UIKit
 
-protocol SourceCurrencyViewDelegate: AnyObject {
+protocol CurrencyViewDelegate: AnyObject {
     func didSelectSource(currency: CurrencySymbol)
 }
 
-final class SourceCurrencyView: UIView {
+final class CurrencyView: UIView {
     // MARK: UI Components
     private var flagLabel: UILabel = {
         let label = UILabel()
@@ -63,7 +63,7 @@ final class SourceCurrencyView: UIView {
     
     // MARK: Model
     private(set) var currency: CurrencySymbol
-    weak var delegate: SourceCurrencyViewDelegate?
+    weak var delegate: CurrencyViewDelegate?
     
     init(currency: CurrencySymbol) {
         self.currency = currency
@@ -83,14 +83,14 @@ final class SourceCurrencyView: UIView {
     
     func bind(rate: Double) {
         let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 2
         formatter.usesSignificantDigits = true
+        formatter.maximumSignificantDigits = 3
         let formattedRate = formatter.string(from: NSNumber(floatLiteral: rate))
         rateLabel.text = "\(formattedRate ?? "")"
     }
 }
 
-private extension SourceCurrencyView {
+private extension CurrencyView {
     func setupViews() {
         bind(currency: currency)
         setupStyle()

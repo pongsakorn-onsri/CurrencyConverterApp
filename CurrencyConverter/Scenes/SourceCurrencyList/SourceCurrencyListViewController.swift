@@ -42,7 +42,7 @@ private extension SourceCurrencyListViewController {
     func setupComponents() {
         view.addSubview(contentView)
         viewModel.items.forEach { currency in
-            let currencyView = SourceCurrencyView(currency: currency)
+            let currencyView = CurrencyView(currency: currency)
             currencyView.delegate = self
             contentView.addArrangedSubview(currencyView)
         }
@@ -70,7 +70,7 @@ private extension SourceCurrencyListViewController {
     }
 }
 
-extension SourceCurrencyListViewController: SourceCurrencyViewDelegate {
+extension SourceCurrencyListViewController: CurrencyViewDelegate {
     func didSelectSource(currency: CurrencySymbol) {
         let controller = DestinationCurrencyListController(viewModel: .init(sourceCurrency: currency))
         navigationController?.show(controller, sender: nil)

@@ -46,7 +46,7 @@ private extension DestinationCurrencyListController {
     func setupComponents() {
         view.addSubview(contentView)
         viewModel.items.forEach { item in
-            let currencyView = SourceCurrencyView(currency: item.symbol)
+            let currencyView = CurrencyView(currency: item.symbol)
             currencyView.delegate = self
             if let rate = item.rate {
                 currencyView.bind(rate: rate)
@@ -58,9 +58,9 @@ private extension DestinationCurrencyListController {
     func refreshViews() {
         contentView.subviews
             .forEach { view in
-                guard let sourceCurrencyView = view as? SourceCurrencyView else { return }
-                if let rate = viewModel.getRate(currency: sourceCurrencyView.currency) {
-                    sourceCurrencyView.bind(rate: rate)
+                guard let CurrencyView = view as? CurrencyView else { return }
+                if let rate = viewModel.getRate(currency: CurrencyView.currency) {
+                    CurrencyView.bind(rate: rate)
                 }
             }
     }
@@ -78,7 +78,7 @@ private extension DestinationCurrencyListController {
     }
 }
 
-extension DestinationCurrencyListController: SourceCurrencyViewDelegate {
+extension DestinationCurrencyListController: CurrencyViewDelegate {
     func didSelectSource(currency: CurrencySymbol) {
         dump(currency)
     }
