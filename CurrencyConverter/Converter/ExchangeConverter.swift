@@ -1,6 +1,6 @@
 import Foundation
 
-public class ExchangeConverter {
+public class ExchangeConverter: Convertable {
     public init() {}
     
     /// Function for convert source amount to to destination amount

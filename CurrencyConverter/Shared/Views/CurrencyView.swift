@@ -82,11 +82,7 @@ final class CurrencyView: UIView {
     }
     
     func bind(rate: Double) {
-        let formatter = NumberFormatter()
-        formatter.usesSignificantDigits = true
-        formatter.maximumSignificantDigits = 3
-        let formattedRate = formatter.string(from: NSNumber(floatLiteral: rate))
-        rateLabel.text = "\(formattedRate ?? "")"
+        rateLabel.text = "\(rate)"
     }
 }
 

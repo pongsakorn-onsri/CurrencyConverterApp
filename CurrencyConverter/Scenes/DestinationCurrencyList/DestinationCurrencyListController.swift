@@ -67,6 +67,7 @@ private extension DestinationCurrencyListController {
     
     func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.backButtonDisplayMode = .minimal
     }
     
     func setupConstraints() {
@@ -80,7 +81,15 @@ private extension DestinationCurrencyListController {
 
 extension DestinationCurrencyListController: CurrencyViewDelegate {
     func didSelectSource(currency: CurrencySymbol) {
-        dump(currency)
+        guard let rate = viewModel.getRate(currency: currency) else { return }
+        let vc = CurrencyConversionController(
+            viewModel: CurrencyConversionViewModelImpl(
+                sourceCurrency: viewModel.sourceCurrency,
+                destinationCurrency: currency,
+                rate: rate
+            )
+        )
+        show(vc, sender: nil)
     }
 }
 
