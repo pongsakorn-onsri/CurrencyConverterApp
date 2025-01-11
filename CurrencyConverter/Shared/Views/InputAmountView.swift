@@ -6,6 +6,8 @@ final class InputAmountView: UIStackView {
         textField.keyboardType = .decimalPad
         textField.textAlignment = .right
         textField.font = .preferredFont(forTextStyle: .largeTitle)
+        textField.adjustsFontSizeToFitWidth = true
+        textField.minimumFontSize = 0.5
         return textField
     }()
     private var symbolLabel: UILabel = {

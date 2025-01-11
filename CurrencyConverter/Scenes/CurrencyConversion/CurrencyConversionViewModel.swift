@@ -8,6 +8,7 @@ protocol CurrencyConversionViewModel {
     
     func input(sourceAmount: String) throws -> String
     func input(destinationAmount: String) throws -> String
+    func getSummaryModel() -> SummaryViewModel?
 }
 
 enum CurrencyConversion: Error, LocalizedError {
@@ -30,10 +31,7 @@ final class CurrencyConversionViewModelImpl: CurrencyConversionViewModel {
     var rate: Double
     var converter: Convertable
     var isValid: Bool {
-        let source = Double(inputSource)
-        let destination = Double(inputDestination)
-        guard let source, let destination else { return false }
-        return source >= Constant.minimumAmount && destination >= Constant.minimumAmount
+        getSummaryModel() != nil
     }
     
     init(
@@ -72,6 +70,18 @@ final class CurrencyConversionViewModelImpl: CurrencyConversionViewModel {
         let result = converter.convert(destinationAmount: amount, rate: rate)
         inputSource = String(format: "%.2f", result)
         return inputSource
+    }
+    
+    func getSummaryModel() -> SummaryViewModel? {
+        let source = Double(inputSource)
+        let destination = Double(inputDestination)
+        guard let source, let destination else { return nil }
+        guard source >= Constant.minimumAmount && destination >= Constant.minimumAmount else { return nil }
+        return SummaryViewModelImpl(
+            source: InputCurrency(amount: source, currency: sourceCurrency),
+            destination: InputCurrency(amount: destination, currency: destinationCurrency),
+            rate: rate
+        )
     }
 }
 

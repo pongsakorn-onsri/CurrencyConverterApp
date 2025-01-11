@@ -82,7 +82,7 @@ final class CurrencyView: UIView {
     }
     
     func bind(rate: Double) {
-        rateLabel.text = "\(rate)"
+        rateLabel.text = rate.formatted()
     }
 }
 

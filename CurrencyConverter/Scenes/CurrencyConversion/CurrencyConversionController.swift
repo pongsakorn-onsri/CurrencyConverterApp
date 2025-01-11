@@ -21,6 +21,7 @@ final class CurrencyConversionController: UIViewController {
         button.configuration?.baseBackgroundColor = .systemMint
         button.configuration?.buttonSize = .large
         button.isEnabled = false
+        button.addAction(summaryAction(), for: .touchUpInside)
         return button
     }()
     
@@ -80,7 +81,7 @@ private extension CurrencyConversionController {
     }
     
     func setupNavigationBar() {
-        title = "1 \(viewModel.sourceSymbol) = \(viewModel.rate) \(viewModel.destinationSymbol)"
+        title = "1 \(viewModel.sourceSymbol) = \(viewModel.rate.formatted()) \(viewModel.destinationSymbol)"
         navigationItem.backButtonDisplayMode = .minimal
     }
     
@@ -155,6 +156,14 @@ private extension CurrencyConversionController {
     func setupBinding() {
         sourceAmountView.bind(symbol: viewModel.sourceSymbol)
         destinationAmountView.bind(symbol: viewModel.destinationSymbol)
+    }
+    
+    func summaryAction() -> UIAction {
+        UIAction { [weak self] _ in
+            guard let summaryModel = self?.viewModel.getSummaryModel() else { return }
+            let vc = SummaryViewController(viewModel: summaryModel)
+            self?.show(vc, sender: nil)
+        }
     }
 }
 
