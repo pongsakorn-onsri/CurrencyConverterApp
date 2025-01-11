@@ -1,43 +1,7 @@
 import UIKit
 
 final class SummaryViewController: UIViewController {
-    // MARK: UI Components
-    private var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .extraLargeTitle)
-        label.text = "Currency Converter"
-        return label
-    }()
-    private lazy var sourceAmountView = InputAmountView()
-    private lazy var destinationAmountView = InputAmountView()
-    private var rateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .subheadline)
-        label.textAlignment = .right
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private var arrowDownImageView: UIImageView = {
-        let image = UIImage(systemName: "arrowshape.down.fill")
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
-        return imageView
-    }()
-    
-    private lazy var contentView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, sourceAmountView, arrowDownImageView, destinationAmountView, rateLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.alignment = .center
-        stackView.layoutMargins = .init(top: 16, left: 16, bottom: 16, right: 16)
-        stackView.layer.borderWidth = 1
-        stackView.layer.cornerRadius = 16
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    private lazy var contentView = SummaryView()
     
     private var shareButton: UIButton = {
         let button = UIButton(configuration: .filled())
@@ -113,14 +77,11 @@ private extension SummaryViewController {
     }
     
     func setupBinding() {
-        let rateText = "Currency Rate 1 \(viewModel.source.currency.rawValue) = \(viewModel.rate.formatted()) \(viewModel.destination.currency.rawValue)"
-        rateLabel.text = rateText
-        sourceAmountView.textField.isEnabled = false
-        sourceAmountView.textField.text = "\(viewModel.source.amount)"
-        sourceAmountView.bind(symbol: viewModel.source.currency.rawValue)
-        destinationAmountView.textField.isEnabled = false
-        destinationAmountView.textField.text = "\(viewModel.destination.amount)"
-        destinationAmountView.bind(symbol: viewModel.destination.currency.rawValue)
+        contentView.bind(
+            source: viewModel.source,
+            destination: viewModel.destination,
+            rate: viewModel.rate
+        )
     }
     
     func shareAction() -> UIAction {

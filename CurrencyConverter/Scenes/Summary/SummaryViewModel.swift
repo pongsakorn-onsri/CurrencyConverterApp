@@ -4,6 +4,7 @@ protocol SummaryViewModel {
     var source: InputCurrency { get }
     var destination: InputCurrency { get }
     var rate: Double { get }
+    func save()
 }
 
 final class SummaryViewModelImpl: SummaryViewModel {
@@ -19,5 +20,9 @@ final class SummaryViewModelImpl: SummaryViewModel {
         self.source = source
         self.destination = destination
         self.rate = rate
+    }
+    
+    func save() {
+        
     }
 }

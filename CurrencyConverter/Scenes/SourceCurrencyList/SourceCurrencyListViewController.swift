@@ -66,7 +66,9 @@ private extension SourceCurrencyListViewController {
     }
     
     func openHistory() {
-        
+        let controller = HistoryListViewController()
+        controller.delegate = self
+        showDetailViewController(controller, sender: nil)
     }
 }
 
@@ -74,6 +76,21 @@ extension SourceCurrencyListViewController: CurrencyViewDelegate {
     func didSelectSource(currency: CurrencySymbol) {
         let controller = DestinationCurrencyListController(viewModel: .init(sourceCurrency: currency))
         navigationController?.show(controller, sender: nil)
+    }
+}
+
+extension SourceCurrencyListViewController: HistoryListViewControllerDelegate {
+    func didSelectHistory(item: HistoryItem) {
+        dismiss(animated: true) {
+            let controller = CurrencyConversionController(
+                viewModel: CurrencyConversionViewModelImpl(
+                    source: item.source,
+                    destination: item.destination,
+                    rate: item.rate
+                )
+            )
+            self.show(controller, sender: nil)
+        }
     }
 }
 

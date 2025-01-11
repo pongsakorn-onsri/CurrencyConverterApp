@@ -1,6 +1,6 @@
 import Foundation
 
-struct InputCurrency {
+struct InputCurrency: Codable {
     var amount: Double
     var currency: CurrencySymbol
 }

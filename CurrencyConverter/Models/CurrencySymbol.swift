@@ -1,6 +1,6 @@
 import Foundation
 
-enum CurrencySymbol: String, CaseIterable {
+enum CurrencySymbol: String, CaseIterable, Codable {
     case USD
     case MYR
     case VND

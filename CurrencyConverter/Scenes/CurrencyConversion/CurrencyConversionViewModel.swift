@@ -35,6 +35,20 @@ final class CurrencyConversionViewModelImpl: CurrencyConversionViewModel {
     }
     
     init(
+        source: InputCurrency,
+        destination: InputCurrency,
+        rate: Double,
+        converter: Convertable = ExchangeConverter()
+    ) {
+        self.inputSource = source.amount.formatted()
+        self.sourceCurrency = source.currency
+        self.inputDestination = destination.amount.formatted()
+        self.destinationCurrency = destination.currency
+        self.rate = rate
+        self.converter = converter
+    }
+    
+    init(
         sourceCurrency: CurrencySymbol = .USD,
         destinationCurrency: CurrencySymbol = .VND,
         rate: Double = 25379.57,
