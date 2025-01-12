@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 final class DestinationCurrencyListController: UIViewController {
     // MARK: UI Components
@@ -28,8 +29,12 @@ final class DestinationCurrencyListController: UIViewController {
         super.viewDidLoad()
         setupViews()
         Task {
-            try await viewModel.fetchCurrencyRates()
-            refreshViews()
+            do {
+                try await viewModel.fetchCurrencyRates()
+                refreshViews()
+            } catch {
+                showError(error: error)
+            }
         }
     }
 }
@@ -76,6 +81,12 @@ private extension DestinationCurrencyListController {
             contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             contentView.topAnchor.constraint(equalTo: view.topAnchor)
         ])
+    }
+    
+    func showError(error: Error) {
+        let controller = ErrorSheetViewController(error: error)
+        controller.modalPresentationStyle = .overCurrentContext
+        present(controller, animated: false)
     }
 }
 
