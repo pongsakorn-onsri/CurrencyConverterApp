@@ -74,7 +74,9 @@ private extension SourceCurrencyListViewController {
 
 extension SourceCurrencyListViewController: CurrencyViewDelegate {
     func didSelectSource(currency: CurrencySymbol) {
-        let controller = DestinationCurrencyListController(viewModel: .init(sourceCurrency: currency))
+        let controller = DestinationCurrencyListController(
+            viewModel: DestinationCurrencyListViewModelImpl(sourceCurrency: currency)
+        )
         navigationController?.show(controller, sender: nil)
     }
 }

@@ -16,7 +16,7 @@ final class DestinationCurrencyListController: UIViewController {
     // MARK: ViewModels
     private var viewModel: DestinationCurrencyListViewModel
     
-    init(viewModel: DestinationCurrencyListViewModel = .init(sourceCurrency: .USD)) {
+    init(viewModel: DestinationCurrencyListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -105,5 +105,9 @@ extension DestinationCurrencyListController: CurrencyViewDelegate {
 }
 
 #Preview {
-    UINavigationController(rootViewController: DestinationCurrencyListController())
+    UINavigationController(
+        rootViewController: DestinationCurrencyListController(
+            viewModel: DestinationCurrencyListViewModelImpl(sourceCurrency: .USD)
+        )
+    )
 }
