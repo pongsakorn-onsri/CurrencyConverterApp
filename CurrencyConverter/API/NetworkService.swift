@@ -1,7 +1,7 @@
 import Foundation
 
 protocol NetworkService {
-    func requestExchangeRate(symbol: String) async throws -> ExchangeRateResponse
+    func requestExchangeRate<T: Decodable>(symbol: String) async throws -> T
 }
 
 final class URLSessionService: NetworkService {
@@ -12,7 +12,7 @@ final class URLSessionService: NetworkService {
         self.session = session
     }
     
-    func requestExchangeRate(symbol: String) async throws -> ExchangeRateResponse {
+    func requestExchangeRate<T: Decodable>(symbol: String) async throws -> T {
         let url = URL(string: APIRequest.exchangeRate(symbol: symbol).urlString)
         guard let url else {
             throw APIError.invalidURL
@@ -25,7 +25,7 @@ final class URLSessionService: NetworkService {
         do {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let rateResponse = try decoder.decode(ExchangeRateResponse.self, from: data)
+            let rateResponse = try decoder.decode(T.self, from: data)
             return rateResponse
         } catch {
             throw APIError.decodeResponseFailed

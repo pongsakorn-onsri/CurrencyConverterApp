@@ -24,7 +24,7 @@ final class DestinationCurrencyListViewModelImpl: DestinationCurrencyListViewMod
     }
     
     func fetchCurrencyRates() async throws {
-        let response = try await networkService.requestExchangeRate(symbol: sourceCurrency.rawValue)
+        let response: ExchangeRateResponse = try await networkService.requestExchangeRate(symbol: sourceCurrency.rawValue)
         items = items.map {
             CurrencyRate(symbol: $0.symbol, rate: response.rates[$0.symbol.rawValue])
         }
