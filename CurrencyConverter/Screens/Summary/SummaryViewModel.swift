@@ -26,6 +26,8 @@ final class SummaryViewModelImpl: SummaryViewModel {
     }
     
     func save() {
-        persistence.save(item: .init(source: source, destination: destination, rate: rate))
+        let items: [HistoryItem] = persistence.getValueList(for: HistoryItem.key)
+        let newHistoryItem = HistoryItem(source: source, destination: destination, rate: rate)
+        persistence.saveValue(items: [newHistoryItem] + items, for: HistoryItem.key)
     }
 }

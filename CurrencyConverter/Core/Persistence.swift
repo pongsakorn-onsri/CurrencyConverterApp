@@ -1,8 +1,8 @@
 import Foundation
 
 protocol Persistence {
-    var historyItems: [HistoryItem] { get }
-    func save(item: HistoryItem)
+    func getValueList<T: Decodable>(for key: String) -> [T]
+    func saveValue<T: Encodable>(items: [T], for key: String)
 }
 
 final class LocalStorage: Persistence {
@@ -12,22 +12,21 @@ final class LocalStorage: Persistence {
         self.userDefaults = userDefaults
     }
     
-    var historyItems: [HistoryItem] {
-        guard let data = userDefaults.object(forKey: HistoryItem.key) as? Data else {
+    func getValueList<T>(for key: String) -> [T] where T : Decodable {
+        guard let data = userDefaults.object(forKey: key) as? Data else {
             return []
         }
         let decoder = JSONDecoder()
-        guard let items = try? decoder.decode([HistoryItem].self, from: data) else {
+        guard let items = try? decoder.decode([T].self, from: data) else {
             return []
         }
         return items
     }
     
-    func save(item: HistoryItem) {
-        let items = [item] + historyItems
+    func saveValue<T>(items: [T], for key: String) where T : Encodable {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(items) {
-            userDefaults.set(encoded, forKey: HistoryItem.key)
+            userDefaults.set(encoded, forKey: key)
         }
     }
 }

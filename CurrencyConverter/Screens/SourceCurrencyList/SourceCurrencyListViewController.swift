@@ -83,16 +83,15 @@ extension SourceCurrencyListViewController: CurrencyViewDelegate {
 
 extension SourceCurrencyListViewController: HistoryListViewControllerDelegate {
     func didSelectHistory(item: HistoryItem) {
-        dismiss(animated: true) {
-            let controller = CurrencyConversionController(
-                viewModel: CurrencyConversionViewModelImpl(
-                    source: item.source,
-                    destination: item.destination,
-                    rate: item.rate
-                )
+        dismiss(animated: true)
+        let controller = CurrencyConversionController(
+            viewModel: CurrencyConversionViewModelImpl(
+                source: item.source,
+                destination: item.destination,
+                rate: item.rate
             )
-            self.show(controller, sender: nil)
-        }
+        )
+        show(controller, sender: nil)
     }
 }
 

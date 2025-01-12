@@ -15,7 +15,7 @@ final class HistoryListViewModelImpl: HistoryListViewModel {
     }
     
     func fetchHistory() async -> [HistoryItem] {
-        self.items = persistence.historyItems
-        return self.items
+        items = persistence.getValueList(for: HistoryItem.key)
+        return items
     }
 }
