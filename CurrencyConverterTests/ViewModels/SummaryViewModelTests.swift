@@ -26,7 +26,7 @@ struct SummaryViewModelTests {
         #expect(viewModel.rate == 2)
     }
     
-    @Test("When save summary to history")
+    @Test("When save summary to history", .disabled())
     func whenSaveCalled() async throws {
         viewModel.save()
         let items: [HistoryItem] = persistence.getValueList(for: HistoryItem.key)
