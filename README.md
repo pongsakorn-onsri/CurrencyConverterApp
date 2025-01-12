@@ -10,7 +10,7 @@ I would like to introduce you to my application.
 **CurrencyConverter** was created as an iOS application utilizing expertise in the MVVM Architecture, Dependency Injection, Swift Combine, Concurrency, Unit Testing, and other relevant technologies.
 
 ## Prerequisite 
-* Xcode 16.2 with 
+* Xcode 16 (required for Testing framework)
 * iOS SDK (18 or upper) `download extra from Xcode`
 
 ## Dependency
