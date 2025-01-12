@@ -1,6 +1,11 @@
 import Testing
 @testable import CurrencyConverter
 
+extension Tag {
+    @Tag static var core: Self
+}
+
+@Suite(.tags(.core))
 struct ExchangeConverterTests {
 
     @Test

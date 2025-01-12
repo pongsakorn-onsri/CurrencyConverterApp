@@ -1,6 +1,6 @@
 import Foundation
 
-protocol NetworkService {
+public protocol NetworkService {
     func requestExchangeRate<T: Decodable>(symbol: String) async throws -> T
 }
 

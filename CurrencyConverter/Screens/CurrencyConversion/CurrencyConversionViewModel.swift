@@ -13,7 +13,7 @@ protocol CurrencyConversionViewModel {
     func getSummaryModel() -> SummaryViewModel?
 }
 
-enum CurrencyConversion: Error, LocalizedError {
+enum CurrencyConversionError: Error, LocalizedError {
     case invalidText
     case lessThanMinimum
     
@@ -65,10 +65,10 @@ final class CurrencyConversionViewModelImpl: CurrencyConversionViewModel {
     func input(sourceAmount: String) throws -> String {
         inputSource = sourceAmount
         guard let amount = Double(sourceAmount) else {
-            throw CurrencyConversion.invalidText
+            throw CurrencyConversionError.invalidText
         }
         guard amount >= Constant.minimumAmount else {
-            throw CurrencyConversion.lessThanMinimum
+            throw CurrencyConversionError.lessThanMinimum
         }
         let result = converter.convert(sourceAmount: amount, rate: rate)
         inputDestination = String(format: "%.2f", result)
@@ -78,10 +78,10 @@ final class CurrencyConversionViewModelImpl: CurrencyConversionViewModel {
     func input(destinationAmount: String) throws -> String {
         inputDestination = destinationAmount
         guard let amount = Double(destinationAmount) else {
-            throw CurrencyConversion.invalidText
+            throw CurrencyConversionError.invalidText
         }
         guard amount >= Constant.minimumAmount else {
-            throw CurrencyConversion.lessThanMinimum
+            throw CurrencyConversionError.lessThanMinimum
         }
         let result = converter.convert(destinationAmount: amount, rate: rate)
         inputSource = String(format: "%.2f", result)

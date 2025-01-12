@@ -15,7 +15,7 @@ final class SourceCurrencyListViewController: UIViewController {
     // MARK: ViewModels
     private var viewModel: SourceCurrencyListViewModel
     
-    init(viewModel: SourceCurrencyListViewModel = .init()) {
+    init(viewModel: SourceCurrencyListViewModel = SourceCurrencyListViewModelImpl()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

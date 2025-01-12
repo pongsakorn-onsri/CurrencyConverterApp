@@ -1,11 +1,11 @@
 import Foundation
 
-enum APIError: LocalizedError {
+public enum APIError: LocalizedError {
     case invalidURL
     case decodeResponseFailed
     case notFound
     
-    var errorDescription: String? {
+    public var errorDescription: String? {
         return switch self {
         case .invalidURL:
             "The Request URL is invalid or incorrect format."
